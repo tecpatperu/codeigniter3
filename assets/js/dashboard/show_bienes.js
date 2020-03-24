@@ -1294,6 +1294,7 @@ function buscarbienes(){
  var inputVal = document.getElementById("AC_VH_DOLARESp");
 
                           inputVal.style.backgroundColor = "Gainsboro";
+                          jeje
 
 
 
