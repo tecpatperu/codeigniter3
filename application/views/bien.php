@@ -51,7 +51,7 @@
 
 
             <td >
-                <a class="btn btn-warning btn-sm" href="<?=base_url('oficinas/editar/'.$item->Id)?>" role="button">Editar</a> <a class="btn btn-danger btn-sm" href="#" data-id="<?=$item->Id?>" id="delete" role="button">Eliminar</a>
+                <a class="btn btn-warning btn-sm" href="<?=base_url('bienes/editar/'.$item->Id)?>" role="button">Editar</a> <a class="btn btn-danger btn-sm" href="#" data-id="<?=$item->Id?>" id="delete" role="button">Eliminar</a>
             </td>
           </tr>
           <?php endforeach; ?>

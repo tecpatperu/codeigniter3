@@ -80,7 +80,7 @@
       </li>
 
       <!--Nav Item Gestion-->
-      <li class="nav-item">
+      <li class="nav-item <?= $this->uri->segment(1) == 'bienes' ? 'active' : ''; ?>"  >
         <a class="nav-link collapsed" href="<?php echo base_url()."assets/"; ?>#" data-toggle="collapse" data-target="#collapsegestion" aria-expanded="true" aria-controls="collapsegestion">
           <i class="fas fa-user-clock"></i>
           <span>Gestión</span>
@@ -88,15 +88,20 @@
         <div id="collapsegestion" class="collapse <?= $this->uri->segment(1) == 'bienes' ? 'show' : ''; ?>" aria-labelledby="headinggestion" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-color.html" style="font-size:  10px;">Inversion</a>
-            <a class="collapse-item"  href="#" data-toggle="collapsebienes" data-target="#collapsebienes1" aria-expanded="true" aria-controls="collapsebienes" style="font-size:  10px;"> <span>Bienes</span></a>
+            <a id="accordionbienes" class="collapse-item"  href="#" data-toggle="collapse" data-target="#collapsebienes1" aria-expanded="true" aria-controls="collapsebienes" style="font-size:  10px;"> <span>Bienes</span></a>
 
-                <div id="collapsebienes1" class="collapsebienes <?= $this->uri->segment(1) == 'bienes' ? 'show' : ''; ?>"  aria-labelledby="headingbien" data-parent="#accordionSidebar">
+                <div id="collapsebienes1" class="collapse <?= $this->uri->segment(1) == 'bienes' ? 'show' : ''; ?>"  aria-labelledby="headingbien" data-parent="#accordionbienes">
                      <div  class="bg-white py-2 collapse-inner2 rounded">
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'bienes' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Incorporacion</a>
-                       
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'consultas' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Consultas</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'mejoras' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Mejoras</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'traslados' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Traslados</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'bajas' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Bajas</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'ajustes' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Ajustes</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'impresion' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Impresion</a>
+                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'reclasificacion' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Reclasificacion</a>
                      </div>
                 </div>
-
  
             <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-animation.html" style="font-size:  10px;">Revaluacion</a>
              
@@ -128,7 +133,7 @@
         </a>
         <div id="collapseProcesos" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-color.html" style="font-size:  10px;">Depreciación</a>
+            <a class="collapse-item" href="<?php echo base_url('depreciacion');?>" style="font-size:  10px;">Depreciación</a>
             <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-border.html" style="font-size:  10px;">Ajustes por Dif. de Cambio</a>
             <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-color.html" style="font-size:  10px;">Cierre/Apertura Mensual</a>
             <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-color.html" style="font-size:  10px;">Cierre/Apertura del Ejercicio</a>

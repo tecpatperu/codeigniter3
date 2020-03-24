@@ -38,7 +38,7 @@
         return $sql->result();
     }
     public function updatecuentacontable($id,$data){
-        $this->db->where('SE_ID',$id);
+        $this->db->where('AR_ID',$id);
         $this->db->update('AF_MA_CUENTA_CONTABLE',$data);
     }
     public function getCuentacontable($id){

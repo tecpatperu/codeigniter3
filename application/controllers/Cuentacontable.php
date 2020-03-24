@@ -59,35 +59,66 @@ class Cuentacontable extends CI_Controller {
     }
     
     public function update(){
-            $_id = $this->input->post('idCuentacontable');
-            $descripcion = $this->input->post('descripcion');
-            $abreviatura = $this->input->post('abreviatura');
-            $estado = $this->input->post('estado');   
-            if (isset($estado) ==false ) {
-                  $estado = '0';
-            }
-           // $this->form_validation->set_rules(getUpdateUserRules());
-           // if($this->form_validation->run() === FALSE){
-           //     $view = $this->load->view('admin/edit_user','',true);
-           //     $this->getTemplate($view);
-           // }else{
-                # actualizar
-                // show_404();
+        $AR_ID = $this->input->post('AR_ID');
+        $AR_DESCRIPCION = $this->input->post('AR_DESCRIPCION');
+        $AR_TASA = $this->input->post('AR_TASA');
+        $tiempovida = $this->input->post('tiempovida');
+        $AR_CUENTA_CARGO = $this->input->post('AR_CUENTA_CARGO');
+        $AR_CUENTA_ABONO = $this->input->post('AR_CUENTA_ABONO');
+        $AR_CUENTA_CARGO_DC = $this->input->post('AR_CUENTA_CARGO_DC');
+        $AR_CUENTA_ABONO_DC = $this->input->post('AR_CUENTA_ABONO_DC');
+        $AR_CUENTA_ABONO_DC_PERDIDA = $this->input->post('AR_CUENTA_ABONO_DC_PERDIDA');
+        $AR_CUENTA_CARGO_R = $this->input->post('AR_CUENTA_CARGO_R');
+        $AR_CUENTA_ABONO_R = $this->input->post('AR_CUENTA_ABONO_R');
+        $terminal = gethostname();
+        $format = "%Y-%m-%d %h:%i %a";
+        $fechaRegistro = @mdate($format);
+
+        $this->form_validation->set_rules(getCreateUserRules());
+
          if (isset($this->session)){
             $usuariocrea = $this->session->userdata('CODUSUARIO');
 
          }else{
               $usuariocrea = NULL;  
-         }
-                $data = array(
-                    'SE_DESCRIPCION' => $descripcion,
-                    'SE_ABREVIATURA' => $abreviatura,
-                    'SE_ESTADO' => $estado,
-                    'SE_FECMOD' => $fechaRegistro,
-                    'SE_USUARIO' => $usuariocrea,
 
-                );
-                $this->CuentacontableModel->updateCuentacontable($_id,$data);
+         }  
+
+
+         if (isset($tiempovida) or $tiempovida == ""  or tiempovida == "0" ){
+             $AR_TIEMPO_VIDA_FINANCIERO   =  '0';
+             $AR_TASA_ANUAL_FINANCIERO    =  '0';
+             $AR_TASA_MENSUAL_FINANCIERO   = '0';
+        }else{
+             $AR_TIEMPO_VIDA_FINANCIERO   =  $tiempovida;
+             $AR_TASA_ANUAL_FINANCIERO    =  $tiempovida;
+             $AR_TASA_MENSUAL_FINANCIERO   = $tiempovida;
+        }
+        //if($this->form_validation->run() == FALSE){
+        //   $this->output->set_status_header(400);
+        //}else {
+            $data = array(
+                'AR_ID' =>  $AR_ID,
+                'AR_DESCRIPCION' => $AR_DESCRIPCION,
+                'AR_TASA' => $AR_TASA,
+                'AR_CUENTA_CARGO' => $AR_CUENTA_CARGO,
+                'AR_CUENTA_ABONO' => $AR_CUENTA_ABONO,
+                'AR_CUENTA_CARGO_DC' => $AR_CUENTA_CARGO_DC,
+                'AR_CUENTA_ABONO_DC' => $AR_CUENTA_ABONO_DC,
+                'AR_CUENTA_ABONO_DC_PERDIDA' => $AR_CUENTA_ABONO_DC_PERDIDA,
+                'AR_CUENTA_CARGO_R' => $AR_CUENTA_CARGO_R,
+                'AR_CUENTA_ABONO_R' => $AR_CUENTA_ABONO_R,
+                'AR_TERMINAL' => $terminal,
+                'AR_TIEMPO_VIDA_FINANCIERO' => $AR_TIEMPO_VIDA_FINANCIERO,
+                'AR_TASA_ANUAL_FINANCIERO' => $AR_TASA_ANUAL_FINANCIERO,
+                'AR_TASA_MENSUAL_FINANCIERO' => $AR_TASA_MENSUAL_FINANCIERO,
+  
+                'AR_FECMOD' => $fechaRegistro,
+                'AR_USUARIO' => $usuariocrea,
+                'AR_ESTADO' => 1,
+            );
+ 
+                $this->CuentacontableModel->updateCuentacontable($AR_ID,$data);
                 $this->session->set_flashdata('msg','La cuentacontable '.$descripcion.' fue actualizado correctamente');
                 redirect('cuentascontable');
             //}
@@ -144,7 +175,7 @@ class Cuentacontable extends CI_Controller {
                 'AR_CUENTA_ABONO_DC_PERDIDA' => $AR_CUENTA_ABONO_DC_PERDIDA,
                 'AR_CUENTA_CARGO_R' => $AR_CUENTA_CARGO_R,
                 'AR_CUENTA_ABONO_R' => $AR_CUENTA_ABONO_R,
-                'AR_TERMINAL' => $AR_TERMINAL,
+                'AR_TERMINAL' => $terminal,
                 'AR_TIEMPO_VIDA_FINANCIERO' => $AR_TIEMPO_VIDA_FINANCIERO,
                 'AR_TASA_ANUAL_FINANCIERO' => $AR_TASA_ANUAL_FINANCIERO,
                 'AR_TASA_MENSUAL_FINANCIERO' => $AR_TASA_MENSUAL_FINANCIERO,

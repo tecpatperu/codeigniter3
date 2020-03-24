@@ -4,14 +4,7 @@ $('#estado').on('click', function () {
     $(this).val(this.checked ? 1 : 0);
      
 });
-
- $('#tasa').on('keyup', function () {
-    $('#tiempovida').val(12*100/this.value);
-     
-});
  
-   $("#tiempovida").attr('value', 12*100/$('#tasa').val());  
-
     if ($('#estado').val() == "0" ) {
  
        $("#estado").attr('checked', false);  
@@ -20,30 +13,59 @@ $('#estado').on('click', function () {
       $("#estado").attr('checked', true);  
     }
 
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+      $('#blah').attr('src', e.target.result);
+    }
+    
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#imgInp").change(function() {
+  readURL(this);
+});
+ 
+ 
+ 
 
 
-  $('#cuentas1 > tbody').on('dblclick', '>tr', function () {
+
+
+
+  $('#locales > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_CARGO']").val(id);
-       $("input[name='AR_DES_CUENTA_CARGO']").val(idesc);
+       $("input[name='OF_IDLOCAL']").val(id);
+       $("input[name='DESC_LOCAL']").val(idesc);
 
-   $("#show_modal1").modal('hide');
+
+
+   $("#show_modallocales").modal('hide');
+  
 
     });
  
 
-$('.view_detail1').click(function(){
-          
-          
+$('.view_detaillocales').click(function(){
+          var sede = $("input[name='DESC_SEDE']").val() ;
+          var idsede = $("input[name='OF_IDSEDE']").val() ;
+          if (  !sede || sede == ""){
+           $('#localerror').html("Debe escoger una sede");
+            return ;
+          }
+         
          
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/local/get_local_data/'+idsede,
            
               method:'GET',
               dataType:'json',
@@ -53,80 +75,27 @@ $('.view_detail1').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i]['Codigo.Local']+'">'+
+                        '<td>'+data[i]['Codigo.Local']+'</td>'+
+                        '<td>'+data[i]['Descripción']+'</td>'+
+                        '<td>'+data[i]['Estado']+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords1').html(html);
-                 $('#show_modal1').modal({backdrop: 'static', keyboard: true, show: true});         
-              },
-              error: function (jqXHR, textStatus, errorThrown)
-              {
-                alert(errorThrown +'Error get data from ajax');
-              }
-          });
-      });
+                  if (data.length == 0) {
 
-
- 
-
-
-
-  $('#cuentas2 > tbody').on('dblclick', '>tr', function () {
-       id = $(this).attr("id");
-       //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
-       idesc = $(this).find('td:nth-child(2)').text();
- 
-
-       $("input[name='AR_CUENTA_ABONO']").val(id);
-       $("input[name='AR_DES_CUENTA_ABONO']").val(idesc);
-
-   $("#show_modal2").modal('hide');
-
-    });
- 
-
-$('.view_detail2').click(function(){
-          
-          
-         
-          
-          $.ajax({
-            type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
-           
-              method:'GET',
-              dataType:'json',
-              success:function(data) {
-            
-         
- 
-                  var html = '';
-                  var i;
-                  var cuenta = '';
-                  for(i=0; i<data.length; i++){
-
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
-                        '<td style="text-align:right;">'+
-                          
-                         
-                        '</td>'+
-                        '</tr>';
+                    $('#listlocales').html('<tr><td colspan = "4">No hay data relacionada con la sede escogida</td></tr>');
+                  }else{
+                    $('#listlocales').html(html);    
                   }
-                $('#listRecords2').html(html);
-                 $('#show_modal2').modal({backdrop: 'static', keyboard: true, show: true});         
+                
+                 $('#show_modallocales').modal({backdrop: 'static', keyboard: true, show: true});         
+                   $('#localerror').html("");
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -137,28 +106,32 @@ $('.view_detail2').click(function(){
 
 
 
-  $('#cuentas3 > tbody').on('dblclick', '>tr', function () {
+  $('#areas > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_CARGO_DC']").val(id);
-       $("input[name='AR_DES_CUENTA_CARGO_DC']").val(idesc);
+       $("input[name='OF_IDAREA']").val(id);
+       $("input[name='DESC_AREA']").val(idesc);
 
-   $("#show_modal3").modal('hide');
+
+
+   $("#show_modalareas").modal('hide');
+
+
+
 
     });
  
 
-$('.view_detail3').click(function(){
+$('.view_detailareas').click(function(){
           
-          
-         
+
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/area/get_area_data',
            
               method:'GET',
               dataType:'json',
@@ -168,21 +141,20 @@ $('.view_detail3').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i]['Codigo.Area']+'">'+
+                        '<td>'+data[i]['Codigo.Area']+'</td>'+
+                        '<td>'+data[i]['Area']+'</td>'+
+                        '<td>'+data[i].Estado+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords3').html(html);
-                 $('#show_modal3').modal({backdrop: 'static', keyboard: true, show: true});         
+                $('#listareas').html(html);
+                 $('#show_modalareas').modal({backdrop: 'static', keyboard: true, show: true});         
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -193,31 +165,33 @@ $('.view_detail3').click(function(){
 
 
 
-
-
-
-  $('#cuentas4 > tbody').on('dblclick', '>tr', function () {
+  $('#responsables > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_ABONO_DC']").val(id);
-       $("input[name='AR_DES_CUENTA_ABONO_DC']").val(idesc);
+       $("input[name='OF_RESPONSABLE']").val(id);
+       $("input[name='DESC_RESPONSABLE']").val(idesc);
 
-   $("#show_modal4").modal('hide');
+
+
+   $("#show_modalresponsables").modal('hide');
+
+
+
 
     });
  
 
-$('.view_detail4').click(function(){
+$('.view_detailresponsables').click(function(){
           
           
          
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/usuario/get_usuario_data',
            
               method:'GET',
               dataType:'json',
@@ -227,21 +201,20 @@ $('.view_detail4').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i].RA_ID+'">'+
+                        '<td>'+data[i].RA_ID+'</td>'+
+                        '<td>'+data[i].RA_DESCRIPCION+'</td>'+
+                        '<td>'+data[i].RA_ESTADO+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords4').html(html);
-                 $('#show_modal4').modal({backdrop: 'static', keyboard: true, show: true});         
+                $('#listresponsables').html(html);
+                 $('#show_modalresponsables').modal({backdrop: 'static', keyboard: true, show: true});         
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -251,31 +224,33 @@ $('.view_detail4').click(function(){
       });
 
 
-
-
-
-  $('#cuentas5 > tbody').on('dblclick', '>tr', function () {
+  $('#supervisores > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_ABONO_DC_PERDIDA']").val(id);
-       $("input[name='AR_DES_CUENTA_ABONO_DC_PERDIDA']").val(idesc);
+       $("input[name='OF_SUPERVISOR']").val(id);
+       $("input[name='DESC_SUPERVISOR']").val(idesc);
 
-   $("#show_modal5").modal('hide');
+
+
+   $("#show_modalsupervisores").modal('hide');
+
+
+
 
     });
  
 
-$('.view_detail5').click(function(){
+$('.view_detailsupervisores').click(function(){
           
           
          
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/usuario/get_usuario_data',
            
               method:'GET',
               dataType:'json',
@@ -285,21 +260,20 @@ $('.view_detail5').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i].RA_ID+'">'+
+                        '<td>'+data[i].RA_ID+'</td>'+
+                        '<td>'+data[i].RA_DESCRIPCION+'</td>'+
+                        '<td>'+data[i].RA_ESTADO+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords5').html(html);
-                 $('#show_modal5').modal({backdrop: 'static', keyboard: true, show: true});         
+                $('#listsupervisores').html(html);
+                 $('#show_modalsupervisores').modal({backdrop: 'static', keyboard: true, show: true});         
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -309,31 +283,33 @@ $('.view_detail5').click(function(){
       });
 
 
-
-
-
-  $('#cuentas6 > tbody').on('dblclick', '>tr', function () {
+  $('#edificios > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_CARGO_R']").val(id);
-       $("input[name='AR_DES_CUENTA_CARGO_R']").val(idesc);
+       $("input[name='OF_IDOFICINA']").val(id);
+       $("input[name='DESC_OFICINA']").val(idesc);
 
-   $("#show_modal6").modal('hide');
+
+
+   $("#show_modaledificios").modal('hide');
+
+
+
 
     });
  
 
-$('.view_detail6').click(function(){
+$('.view_detailedificios').click(function(){
           
           
          
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/edificio/get_edificio_data',
            
               method:'GET',
               dataType:'json',
@@ -343,21 +319,20 @@ $('.view_detail6').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i].SE_ID+'">'+
+                        '<td>'+data[i].SE_ID+'</td>'+
+                        '<td>'+data[i].SE_DESCRIPCION+'</td>'+
+                        '<td>'+data[i].SE_ESTADO+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords6').html(html);
-                 $('#show_modal6').modal({backdrop: 'static', keyboard: true, show: true});         
+                $('#listedificios').html(html);
+                 $('#show_modaledificios').modal({backdrop: 'static', keyboard: true, show: true});         
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -367,30 +342,33 @@ $('.view_detail6').click(function(){
       });
 
 
-
-
-  $('#cuentas7 > tbody').on('dblclick', '>tr', function () {
+  $('#pisos > tbody').on('dblclick', '>tr', function () {
        id = $(this).attr("id");
        //idesc = $("#sedes > tbody > tr > td").html();//[1].innerHTML;
        idesc = $(this).find('td:nth-child(2)').text();
  
 
-       $("input[name='AR_CUENTA_ABONO_R']").val(id);
-       $("input[name='AR_DES_CUENTA_ABONO_R']").val(idesc);
+       $("input[name='OF_IDPISO']").val(id);
+       $("input[name='DESC_PISO']").val(idesc);
 
-   $("#show_modal7").modal('hide');
+
+
+   $("#show_modalpisos").modal('hide');
+
+
+
 
     });
  
 
-$('.view_detail7').click(function(){
+$('.view_detailpisos').click(function(){
           
           
          
           
           $.ajax({
             type: 'ajax',
-              url : '/codeigniter3/cuentacontable/get_plan_cuenta_data',
+              url : '/codeigniter3/piso/get_piso_data',
            
               method:'GET',
               dataType:'json',
@@ -400,21 +378,20 @@ $('.view_detail7').click(function(){
  
                   var html = '';
                   var i;
-                  var cuenta = '';
                   for(i=0; i<data.length; i++){
 
-                    html +=  '<tr   id="'+data[i].Codigo+'">'+
-                        '<td>'+data[i].Codigo+'</td>'+
-                        '<td>'+data[i].Descripcion+'</td>'+
-                         
+                    html +=  '<tr   id="'+data[i].SE_ID+'">'+
+                        '<td>'+data[i].SE_ID+'</td>'+
+                        '<td>'+data[i].SE_DESCRIPCION+'</td>'+
+                        '<td>'+data[i].SE_ESTADO+'</td>'+                  
                         '<td style="text-align:right;">'+
                           
                          
                         '</td>'+
                         '</tr>';
                   }
-                $('#listRecords7').html(html);
-                 $('#show_modal7').modal({backdrop: 'static', keyboard: true, show: true});         
+                $('#listpisos').html(html);
+                 $('#show_modalpisos').modal({backdrop: 'static', keyboard: true, show: true});         
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
@@ -422,7 +399,6 @@ $('.view_detail7').click(function(){
               }
           });
       });
-
 
 
 

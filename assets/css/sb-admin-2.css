@@ -290,8 +290,12 @@ button::-moz-focus-inner,
 
 input[type="radio"],
 input[type="checkbox"] {
-  box-sizing: border-box;
-  padding: 0;
+height:13px;
+width:13px;
+padding:0;
+margin-top:5px;
+display:block;
+float:left;
 }
 
 input[type="date"],
@@ -3920,10 +3924,11 @@ input[type="button"].btn-block {
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   color: #6e707e;
-  background-color: #fff;
+  background-color: blue;
+  color: white;
   border-color: #dddfeb #dddfeb #fff;
 }
-
+ 
 .nav-tabs .dropdown-menu {
   margin-top: -1px;
   border-top-left-radius: 0;
@@ -10167,7 +10172,7 @@ a:focus {
 .sidebar .nav-item .collapse .collapse-inner .collapse-inner2 .collapse-subitem,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-inner2 .collapse-subitem {
   padding: 0.5rem 1rem;
-  margin: 0 2.5rem;
+  margin: 0 1.5rem;
   display: block;
   color: #3a3b45;
   text-decoration: none;

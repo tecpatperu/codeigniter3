@@ -1,7 +1,7 @@
 <form action="<?= base_url('oficina/store') ?>" method="POST"  enctype="multipart/form-data"  >
-	<h4>Oficina Nueva</h4>
-	<hr>
-	<div class="form-group">
+  <h4>Oficina Nueva</h4>
+  <hr>
+  <div class="form-group">
             <div>
                <input type="file" name="profile_image" id="imgInp" />
               <img id="blah" src="#" alt="your image" />
@@ -49,20 +49,20 @@
                
             </div>
             <div class="form-row">
-        	 
-        			<label class="col-2" for="">Descripcion</label>
-        			<input  class="col-3" type="text" name="OF_DESCRIPCION" class="form-control" placeholder="Nombre de oficina" value="<?= set_value('user') ?>">
-					    <div class="text-danger"><?= form_error('user') ?></div>
-        	 
+           
+              <label class="col-2" for="">Descripcion</label>
+              <input  class="col-3" type="text" name="OF_DESCRIPCION" class="form-control" placeholder="Nombre de oficina" value="<?= set_value('user') ?>">
+              <div class="text-danger"><?= form_error('user') ?></div>
+           
  
-        	 </div>
+           </div>
    
-        	<div class="form-row">
-        		 
-        			<label class="col-2" for="">Abreviatura</label>
-        			<input class="col-3" name="OF_ABREVI" class="form-control" type="text" placeholder="Abreviatura" value="<?= set_value('name') ?>">
-				    	<div class="text-danger"><?= form_error('name') ?></div>   
-        	 
+          <div class="form-row">
+             
+              <label class="col-2" for="">Abreviatura</label>
+              <input class="col-3" name="OF_ABREVI" class="form-control" type="text" placeholder="Abreviatura" value="<?= set_value('name') ?>">
+              <div class="text-danger"><?= form_error('name') ?></div>   
+           
             </div>
    
  
@@ -126,15 +126,15 @@
 
     <!--estado en activo por ser nuevo
     <div class="form-group">
-    	<div class="form-row">
-    		<div class="col-7">
-    			 
+      <div class="form-row">
+        <div class="col-7">
+           
                 <div class="checkbox"> <label><input name = 'SE_ESTADO'  type="checkbox" value="">Estado</label></div>
-				<div class="text-danger"><?= form_error('especialidad') ?></div>
-				
-    		</div>
+        <div class="text-danger"><?= form_error('especialidad') ?></div>
+        
+        </div>
    
-    	</div>
+      </div>
     </div>-->
     <br>
     

@@ -11,6 +11,8 @@ class Bien extends CI_Controller {
         $this->load->helper(array('maestros/sede_rules','string'));
         $this->load->model('BienModel');
         $this->load->helper('date');
+        $this->load->helper('sf_helper');
+
         //$this->load->library('upload');
         $this->load->helper('file');
     }
@@ -20,20 +22,20 @@ class Bien extends CI_Controller {
         $config['per_page'] = 10;
         $config['total_rows'] = count($data);
 
-        $config['full_tag_open'] 	= '<div class="pagging text-center"><nav><ul class="pagination">';
-        $config['full_tag_close'] 	= '</ul></nav></div>';
-        $config['num_tag_open'] 	= '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close'] 	= '</span></li>';
-        $config['cur_tag_open'] 	= '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] 	= '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open'] 	= '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close'] 	= '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open'] 	= '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close'] 	= '</span></li>';
-        $config['first_tag_open'] 	= '<li class="page-item"><span class="page-link">';
+        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination">';
+        $config['full_tag_close']   = '</ul></nav></div>';
+        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close']    = '</span></li>';
+        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
+        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['pr']  = '</span></li>';
+        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
         $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open'] 	= '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close'] 	= '</span></li>';
+        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['last_tagl_close']  = '</span></li>';
 
         $this->pagination->initialize($config);
 
@@ -56,8 +58,11 @@ class Bien extends CI_Controller {
         }
     }
     public function create(){
-        $vista = $this->load->view('create_bien','',true);
-        $this->getTemplate($vista);
+
+         $id = $this->BienModel->getlastid();
+         $data['id'] = $id; 
+         $vista = $this->load->view('create_bien',$data,true);
+         $this->getTemplate($vista);
     }
     
     public function update(){
@@ -74,37 +79,121 @@ class Bien extends CI_Controller {
      
         $this->upload->do_upload('profile_image');
         $data =   $this->upload->data();
-        $dataString = file_get_contents($data['full_path']);
+      
+        $imagencontenido=$this->input->post('imagencontenido');
 
-        if ($dataString) {
- 
-        $orig_name = $data['orig_name'];
-        $hex_image = bin2hex($dataString); 
-        delete_files('./images/') ;
+        if (empty($data['orig_name'])) {
+            if($imagencontenido=='#'){
+                $foto=null;    
+            }else{
+
+
+            }
        
+        }else{ 
+
+            $dataString = file_get_contents($data['full_path']);
+            $orig_name = $data['orig_name'];
+            $hex_image = bin2hex($dataString); 
+
+            $foto="0x".$hex_image;
+            delete_files('./images/') ;
         }
 
-        $_id   = $this->input->post('OF_ID');
-        $OF_IDSEDE   = $this->input->post('OF_IDSEDE');
-        $OF_IDLOCAL  = $this->input->post('OF_IDLOCAL');
-        $OF_IDAREA   = $this->input->post('OF_IDAREA');
-        $OF_DESCRIPCION  = $this->input->post('OF_DESCRIPCION');
-        $OF_ABREVI   = $this->input->post('OF_ABREVI');
+      $AC_IDACTIVO   = $this->input->post('AC_IDACTIVO');
+ 
+
+
+      // 2 $AC_CODIGO_ALT  = $this->input->post('AC_CODIGO_ALT');
+       // $AC_CODIGO_BARRA   = $this->input->post('AC_CODIGO_BARRA');
+        //$AC_COMPONENTE_DE  = $this->input->post('AC_COMPONENTE_DE');
+        $AC_ACTIVO_DES   = $this->input->post('AC_ACTIVO_DES');
       
         $OF_TERMINAL = gethostname();
- 
+                        
+
+           $AC_CODIGO_ALT   = $this->input->post('AC_CODIGO_ALT');              
+//        AC_IDFAMILIA
+
+         $AC_IDFAMILIA = $this->input->post('AC_IDFAMILIA'); 
        // $OF_IMAGEN   = $this->input->post('OF_DESCRIPCION');
-        $OF_RESPONSABLE = $this->input->post('OF_RESPONSABLE'); 
-        $OF_SUPERVISOR   = $this->input->post('OF_SUPERVISOR');
-        $OF_IDOFICINA   = $this->input->post('OF_IDOFICINA'); 
-        $OF_IDPISO   = $this->input->post('OF_IDPISO');
 
-        $estado = $this->input->post('estado');
-       
-         
-        $format = "%Y-%m-%d %h:%i %a";
-        $fechaRegistro = @mdate($format);
+         $AC_FECHA_COMPRA = $this->input->post('AC_FECHA_COMPRA');
+        $AC_FECHA_INI_OPE = $this->input->post('AC_FECHA_INI_OPE'); 
+        $AC_IDMARCA   = $this->input->post('AC_IDMARCA');
+        $AC_MODELO   = $this->input->post('AC_MODELO'); 
+        $AC_NUMSERIE   = $this->input->post('AC_NUMSERIE');
 
+        $AC_NUMPLACA = $this->input->post('AC_NUMPLACA');
+        $AC_IDPROVE  = $this->input->post('AC_IDPROVE');
+        $AC_TDOC  = $this->input->post('AC_TDOC');
+         $AC_SDOC  = $this->input->post('AC_SDOC');
+     
+
+
+       $AC_NDOC  = $this->input->post('AC_NDOC');
+         $AC_IDESTADO_FISICO  = $this->input->post('AC_IDESTADO_FISICO');
+           $AC_CODIGO_BARRA  = $this->input->post('AC_CODIGO_BARRA');
+             $AC_IDCENCOS  = $this->input->post('AC_IDCENCOS');
+             $AC_IDAREA  = $this->input->post('AC_IDAREA');
+             $AC_NUM_CONTRATO  = $this->input->post('AC_NUM_CONTRATO');
+             $AC_VALOR_RESIDUAL  = $this->input->post('AC_VALOR_RESIDUAL');
+             $AC_IDORIGEN_REQ  = $this->input->post('AC_IDORIGEN_REQ');
+             $AC_IDRESPON_ACTI  = $this->input->post('AC_IDRESPON_ACTI');
+              $AC_IDCOLOR  = $this->input->post('AC_IDCOLOR');
+              $AC_IDSEDE  = $this->input->post('AC_IDSEDE');
+              $AC_IDLOCAL  = $this->input->post('AC_IDLOCAL');
+              $AC_IDOFICINA  = $this->input->post('AC_IDOFICINA');
+               $AC_IDCONDIBIEN  = $this->input->post('AC_IDCONDIBIEN');
+               $AC_IDPROCEDENCIA  = $this->input->post('AC_IDPROCEDENCIA');
+               $AC_TIPO_BIEN  = $this->input->post('AC_TIPO_BIEN');
+               $AC_COMPONENTE_DE  = $this->input->post('AC_COMPONENTE_DE');
+
+                $AC_CODIGO_PRINCIPAL  = $this->input->post('AC_CODIGO_PRINCIPAL');
+                 $AC_SUBFAMILIA  = $this->input->post('AC_SUBFAMILIA');
+                 $AC_IDCUENTA_CONTABLE  = $this->input->post('AC_IDCUENTA_CONTABLE');
+                 $AC_TASA_DEPREC_CONTABLE  = $this->input->post('AC_TASA_DEPREC_CONTABLE');
+                 $AC_MONEDACOMPRA  = $this->input->post('AC_MONEDACOMPRA');
+                 $AC_NUM_VOUCHER  = $this->input->post('AC_NUM_VOUCHER');
+                 $AC_TC_VOUCHER  = $this->input->post('AC_TC_VOUCHER');
+                 $AC_DEPREC_EJERCICIO_CONTABLE  = $this->input->post('AC_DEPREC_EJERCICIO_CONTABLE');
+                 $AC_DEPREC_ACUMULADA_CONTABLE  = $this->input->post('AC_DEPREC_ACUMULADA_CONTABLE');
+                 $AC_VALOR_LIBRO_CONTABLE  = $this->input->post('AC_VALOR_LIBRO_CONTABLE');
+
+                 $AC_TIEMPO_VIDA  = $this->input->post('AC_TIEMPO_VIDA');
+
+                  $AC_DEPREC_INDIVIDUAL  = $this->input->post('AC_DEPREC_INDIVIDUAL');
+                  $AC_REFERENCIA_FINANCIERA  = $this->input->post('AC_REFERENCIA_FINANCIERA');
+                  $AC_DEPREC_EJERCICIO_FINANCIERA  = $this->input->post('AC_DEPREC_EJERCICIO_FINANCIERA');
+                  $AC_DEPREC_ACUMULADA_FINANCIERA  = $this->input->post('AC_DEPREC_ACUMULADA_FINANCIERA');
+                  $AC_ANIO_OTROS  = $this->input->post('AC_ANIO_OTROS');
+                  $AC_CHASIS  = $this->input->post('AC_CHASIS');
+
+
+                  $AC_NUMMOTOR  = $this->input->post('AC_NUMMOTOR');
+
+                   $AC_CODPROYECTO  = $this->input->post('AC_CODPROYECTO');
+
+                   $AC_FLAG_ESTADO_INVENTARIO  = $this->input->post('AC_FLAG_ESTADO_INVENTARIO');
+                   $AC_SUPERVISOR  = $this->input->post('AC_SUPERVISOR');
+                   $AC_USUARIO_UBICACION  = $this->input->post('AC_USUARIO_UBICACION');
+
+                    $AC_DIMENSION = $this->input->post('AC_DIMENSION');
+
+                    $AC_OBSERVACIONES = $this->input->post('AC_OBSERVACIONES');
+
+                    $AC_SERIE_GUIA_REMISION = $this->input->post('AC_SERIE_GUIA_REMISION');
+
+
+                    
+                    $AC_NUM_DUA = $this->input->post('AC_NUM_DUA');
+
+
+                    $AC_VH_SOLES = $this->input->post('AC_VH_SOLES');
+                    $AC_VH_DOLARES = $this->input->post('AC_VH_DOLARES');
+
+
+                    $AC_TASA_DEPREC_INDIVIDUAL =  $this->input->post('AC_TASA_DEPREC_INDIVIDUAL');
 
             if (isset($estado) ==false ) {
                   $estado = '0';
@@ -123,57 +212,284 @@ class Bien extends CI_Controller {
               $usuariocrea = NULL;  
          }
 
-         if ($dataString) {
+    ////  ////   if ($dataString) {
 
-                $data = array(
+    ////            $data = array(
  
-                'OF_IMAGEN' => "0x".$hex_image ,
-                'OF_IDSEDE' => $OF_IDSEDE,
-                'OF_IDLOCAL' => $OF_IDLOCAL,
-                'OF_IDAREA' => $OF_IDAREA,
-                'OF_DESCRIPCION' => $OF_DESCRIPCION,
-                'OF_ABREVI' => $OF_ABREVI,
-                'OF_ESTADO' => $estado,
-                'OF_USUARIO' => $usuariocrea,  
-                'OF_TERMINAL' => $OF_TERMINAL,
-                'OF_FECREG' => $fechaRegistro,
-                'OF_FECMOD' => $fechaRegistro,   
-                'OF_RESPONSABLE' => $OF_RESPONSABLE,  
-                'OF_SUPERVISOR' => $OF_SUPERVISOR,  
-                'OF_IDOFICINA' => $OF_IDOFICINA,    
-                'OF_IDPISO' => $OF_IDPISO,   
+  //              'OF_IMAGEN' => "0x".$hex_image ,
+  //              'OF_IDSEDE' => $OF_IDSEDE,
+  //              'OF_IDLOCAL' => $OF_IDLOCAL,
+//                'OF_IDAREA' => $OF_IDAREA,
+     //           'OF_DESCRIPCION' => $OF_DESCRIPCION,
+ //               'OF_ABREVI' => $OF_ABREVI,
+       //         'OF_ESTADO' => $estado,
+//                'OF_USUARIO' => $usuariocrea,  
+//               'OF_FECREG' => $fechaRegistro,
+       //         'OF_FECMOD' => $fechaRegistro,   
+//                'OF_RESPONSABLE' => $OF_RESPONSABLE,  
+      //          'OF_SUPERVISOR' => $OF_SUPERVISOR,  
+//                'OF_IDOFICINA' => $OF_IDOFICINA,    
+//                'OF_IDPISO' => $OF_IDPISO,   
+
+         //       );
+        //}
+        //else{
+        if (empty($data['orig_name'])) {
+            if($imagencontenido=='#'){
+                 $data = array(
+
+            'AC_CODIGO' => $AC_IDACTIVO,
+              //2   'AC_CODIGO_ALT' => $AC_CODIGO_ALT   ,
+                'AC_ACTIVO_DES' => $AC_ACTIVO_DES,
+            //    'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                'AC_CODIGO_ALT' => $AC_CODIGO_ALT,
+               'AC_IDFAMILIA'  => $AC_IDFAMILIA,
+            'AC_FECHA_COMPRA'=> $AC_FECHA_COMPRA,
+                'AC_FECHA_INI_OPE' => $AC_FECHA_INI_OPE,
+                'AC_IDMARCA' => $AC_IDMARCA,
+                'AC_MODELO' => $AC_MODELO,  
+                'AC_NUMSERIE' => $AC_NUMSERIE,
+                'AC_NUMPLACA' => $AC_NUMPLACA,
+                'AC_IDPROVE' => $AC_IDPROVE,   
+                //'OF_IMAGEN' => $descripcion,   
+                'AC_TDOC' => $AC_TDOC,  
+                'AC_SDOC' => $AC_SDOC,  
+                'AC_NDOC' => $AC_NDOC,    
+                'AC_IDESTADO_FISICO' => $AC_IDESTADO_FISICO,   
+                'AC_CODIGO_BARRA' => $AC_CODIGO_BARRA,  
+                'AC_IDCENCOS' => $AC_IDCENCOS,  
+                'AC_IDAREA' => $AC_IDAREA,  
+                'AC_NUM_CONTRATO' => $AC_NUM_CONTRATO,  
+                'AC_VALOR_RESIDUAL' => $AC_VALOR_RESIDUAL,
+                'AC_IDORIGEN_REQ' => $AC_IDORIGEN_REQ,
+                'AC_IDRESPON_ACTI' => $AC_IDRESPON_ACTI,
+                'AC_IDCOLOR' => $AC_IDCOLOR,
+                'AC_IDSEDE' => $AC_IDSEDE,
+                'AC_IDLOCAL' => $AC_IDLOCAL,
+                'AC_IDOFICINA' => $AC_IDOFICINA,
+                'AC_IDCONDIBIEN' => $AC_IDCONDIBIEN,
+                 'AC_IDPROCEDENCIA' => $AC_IDPROCEDENCIA,
+                 'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                 'AC_COMPONENTE_DE' => $AC_COMPONENTE_DE,
+                 'AC_CODIGO_PRINCIPAL' => $AC_CODIGO_PRINCIPAL,
+                 'AC_SUBFAMILIA' => $AC_SUBFAMILIA,
+                 'AC_IDCUENTA_CONTABLE' => $AC_IDCUENTA_CONTABLE,
+                 'AC_TASA_DEPREC_CONTABLE' => $AC_TASA_DEPREC_CONTABLE,
+                 'AC_MONEDACOMPRA' => $AC_MONEDACOMPRA,
+                 'AC_NUM_VOUCHER' => $AC_NUM_VOUCHER,
+                 'AC_TC_VOUCHER' => $AC_TC_VOUCHER,
+                 'AC_DEPREC_EJERCICIO_CONTABLE' => $AC_DEPREC_EJERCICIO_CONTABLE,
+                 'AC_DEPREC_ACUMULADA_CONTABLE' => $AC_DEPREC_ACUMULADA_CONTABLE,
+                 'AC_VALOR_LIBRO_CONTABLE' => $AC_VALOR_LIBRO_CONTABLE,
+
+                 'AC_TIEMPO_VIDA' => $AC_TIEMPO_VIDA,
+                 'AC_DEPREC_INDIVIDUAL' => $AC_DEPREC_INDIVIDUAL,
+                 'AC_REFERENCIA_FINANCIERA' => $AC_REFERENCIA_FINANCIERA,
+                  'AC_DEPREC_EJERCICIO_FINANCIERA' => $AC_DEPREC_EJERCICIO_FINANCIERA,
+                  'AC_DEPREC_ACUMULADA_FINANCIERA' => $AC_DEPREC_ACUMULADA_FINANCIERA,
+
+                  'AC_ANIO_OTROS' => $AC_ANIO_OTROS,
+                  'AC_CHASIS' => $AC_CHASIS,
+                   'AC_NUMMOTOR' => $AC_NUMMOTOR,
+                   'AC_CODPROYECTO' => $AC_CODPROYECTO,
+                    'AC_FLAG_ESTADO_INVENTARIO' => $AC_FLAG_ESTADO_INVENTARIO,
+
+                    'AC_SUPERVISOR' => $AC_SUPERVISOR,
+                    'AC_USUARIO_UBICACION' => $AC_USUARIO_UBICACION,
+
+                        'AC_DIMENSION' => $AC_DIMENSION,
+
+                        'AC_OBSERVACIONES' => $AC_OBSERVACIONES,
+
+
+                        'AC_SERIE_GUIA_REMISION' => $AC_SERIE_GUIA_REMISION,
+
+                        'AC_NUM_DUA' => $AC_NUM_DUA,
+
+                        'AC_VH_SOLES' => $AC_VH_SOLES,
+
+                        'AC_VH_DOLARES' => $AC_VH_DOLARES,
+                        'AC_FOTO' => $foto,
+
+                                  'AC_TASA_DEPREC_INDIVIDUAL'  => $AC_TASA_DEPREC_INDIVIDUAL
 
                 );
-        }else{
 
+            }else{
+                  $data = array(
+
+            'AC_CODIGO' => $AC_IDACTIVO,
+              //2   'AC_CODIGO_ALT' => $AC_CODIGO_ALT   ,
+                'AC_ACTIVO_DES' => $AC_ACTIVO_DES,
+            //    'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                'AC_CODIGO_ALT' => $AC_CODIGO_ALT,
+               'AC_IDFAMILIA'  => $AC_IDFAMILIA,
+            'AC_FECHA_COMPRA'=> $AC_FECHA_COMPRA,
+                'AC_FECHA_INI_OPE' => $AC_FECHA_INI_OPE,
+                'AC_IDMARCA' => $AC_IDMARCA,
+                'AC_MODELO' => $AC_MODELO,  
+                'AC_NUMSERIE' => $AC_NUMSERIE,
+                'AC_NUMPLACA' => $AC_NUMPLACA,
+                'AC_IDPROVE' => $AC_IDPROVE,   
+                //'OF_IMAGEN' => $descripcion,   
+                'AC_TDOC' => $AC_TDOC,  
+                'AC_SDOC' => $AC_SDOC,  
+                'AC_NDOC' => $AC_NDOC,    
+                'AC_IDESTADO_FISICO' => $AC_IDESTADO_FISICO,   
+                'AC_CODIGO_BARRA' => $AC_CODIGO_BARRA,  
+                'AC_IDCENCOS' => $AC_IDCENCOS,  
+                'AC_IDAREA' => $AC_IDAREA,  
+                'AC_NUM_CONTRATO' => $AC_NUM_CONTRATO,  
+                'AC_VALOR_RESIDUAL' => $AC_VALOR_RESIDUAL,
+                'AC_IDORIGEN_REQ' => $AC_IDORIGEN_REQ,
+                'AC_IDRESPON_ACTI' => $AC_IDRESPON_ACTI,
+                'AC_IDCOLOR' => $AC_IDCOLOR,
+                'AC_IDSEDE' => $AC_IDSEDE,
+                'AC_IDLOCAL' => $AC_IDLOCAL,
+                'AC_IDOFICINA' => $AC_IDOFICINA,
+                'AC_IDCONDIBIEN' => $AC_IDCONDIBIEN,
+                 'AC_IDPROCEDENCIA' => $AC_IDPROCEDENCIA,
+                 'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                 'AC_COMPONENTE_DE' => $AC_COMPONENTE_DE,
+                 'AC_CODIGO_PRINCIPAL' => $AC_CODIGO_PRINCIPAL,
+                 'AC_SUBFAMILIA' => $AC_SUBFAMILIA,
+                 'AC_IDCUENTA_CONTABLE' => $AC_IDCUENTA_CONTABLE,
+                 'AC_TASA_DEPREC_CONTABLE' => $AC_TASA_DEPREC_CONTABLE,
+                 'AC_MONEDACOMPRA' => $AC_MONEDACOMPRA,
+                 'AC_NUM_VOUCHER' => $AC_NUM_VOUCHER,
+                 'AC_TC_VOUCHER' => $AC_TC_VOUCHER,
+                 'AC_DEPREC_EJERCICIO_CONTABLE' => $AC_DEPREC_EJERCICIO_CONTABLE,
+                 'AC_DEPREC_ACUMULADA_CONTABLE' => $AC_DEPREC_ACUMULADA_CONTABLE,
+                 'AC_VALOR_LIBRO_CONTABLE' => $AC_VALOR_LIBRO_CONTABLE,
+
+                 'AC_TIEMPO_VIDA' => $AC_TIEMPO_VIDA,
+                 'AC_DEPREC_INDIVIDUAL' => $AC_DEPREC_INDIVIDUAL,
+                 'AC_REFERENCIA_FINANCIERA' => $AC_REFERENCIA_FINANCIERA,
+                  'AC_DEPREC_EJERCICIO_FINANCIERA' => $AC_DEPREC_EJERCICIO_FINANCIERA,
+                  'AC_DEPREC_ACUMULADA_FINANCIERA' => $AC_DEPREC_ACUMULADA_FINANCIERA,
+
+                  'AC_ANIO_OTROS' => $AC_ANIO_OTROS,
+                  'AC_CHASIS' => $AC_CHASIS,
+                   'AC_NUMMOTOR' => $AC_NUMMOTOR,
+                   'AC_CODPROYECTO' => $AC_CODPROYECTO,
+                    'AC_FLAG_ESTADO_INVENTARIO' => $AC_FLAG_ESTADO_INVENTARIO,
+
+                    'AC_SUPERVISOR' => $AC_SUPERVISOR,
+                    'AC_USUARIO_UBICACION' => $AC_USUARIO_UBICACION,
+
+                        'AC_DIMENSION' => $AC_DIMENSION,
+
+                        'AC_OBSERVACIONES' => $AC_OBSERVACIONES,
+
+
+                        'AC_SERIE_GUIA_REMISION' => $AC_SERIE_GUIA_REMISION,
+
+                        'AC_NUM_DUA' => $AC_NUM_DUA,
+
+                        'AC_VH_SOLES' => $AC_VH_SOLES,
+
+                        'AC_VH_DOLARES' => $AC_VH_DOLARES,
+                         
+
+                                  'AC_TASA_DEPREC_INDIVIDUAL'  => $AC_TASA_DEPREC_INDIVIDUAL
+
+                );
+
+            }
+        }else{
                 $data = array(
 
-                'OF_IDSEDE' => $OF_IDSEDE,
-                'OF_IDLOCAL' => $OF_IDLOCAL,
-                'OF_IDAREA' => $OF_IDAREA,
-                'OF_DESCRIPCION' => $OF_DESCRIPCION,
-                'OF_ABREVI' => $OF_ABREVI,
-                'OF_ESTADO' => $estado,
-                'OF_USUARIO' => $usuariocrea,  
-                'OF_TERMINAL' => $OF_TERMINAL,
-                'OF_FECREG' => $fechaRegistro,
-                'OF_FECMOD' => $fechaRegistro,   
-                'OF_RESPONSABLE' => $OF_RESPONSABLE,  
-                'OF_SUPERVISOR' => $OF_SUPERVISOR,  
-                'OF_IDOFICINA' => $OF_IDOFICINA,    
-                'OF_IDPISO' => $OF_IDPISO,   
+            'AC_CODIGO' => $AC_IDACTIVO,
+              //2   'AC_CODIGO_ALT' => $AC_CODIGO_ALT   ,
+                'AC_ACTIVO_DES' => $AC_ACTIVO_DES,
+            //    'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                'AC_CODIGO_ALT' => $AC_CODIGO_ALT,
+               'AC_IDFAMILIA'  => $AC_IDFAMILIA,
+            'AC_FECHA_COMPRA'=> $AC_FECHA_COMPRA,
+                'AC_FECHA_INI_OPE' => $AC_FECHA_INI_OPE,
+                'AC_IDMARCA' => $AC_IDMARCA,
+                'AC_MODELO' => $AC_MODELO,  
+                'AC_NUMSERIE' => $AC_NUMSERIE,
+                'AC_NUMPLACA' => $AC_NUMPLACA,
+                'AC_IDPROVE' => $AC_IDPROVE,   
+                //'OF_IMAGEN' => $descripcion,   
+                'AC_TDOC' => $AC_TDOC,  
+                'AC_SDOC' => $AC_SDOC,  
+                'AC_NDOC' => $AC_NDOC,    
+                'AC_IDESTADO_FISICO' => $AC_IDESTADO_FISICO,   
+                'AC_CODIGO_BARRA' => $AC_CODIGO_BARRA,  
+                'AC_IDCENCOS' => $AC_IDCENCOS,  
+                'AC_IDAREA' => $AC_IDAREA,  
+                'AC_NUM_CONTRATO' => $AC_NUM_CONTRATO,  
+                'AC_VALOR_RESIDUAL' => $AC_VALOR_RESIDUAL,
+                'AC_IDORIGEN_REQ' => $AC_IDORIGEN_REQ,
+                'AC_IDRESPON_ACTI' => $AC_IDRESPON_ACTI,
+                'AC_IDCOLOR' => $AC_IDCOLOR,
+                'AC_IDSEDE' => $AC_IDSEDE,
+                'AC_IDLOCAL' => $AC_IDLOCAL,
+                'AC_IDOFICINA' => $AC_IDOFICINA,
+                'AC_IDCONDIBIEN' => $AC_IDCONDIBIEN,
+                 'AC_IDPROCEDENCIA' => $AC_IDPROCEDENCIA,
+                 'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                 'AC_COMPONENTE_DE' => $AC_COMPONENTE_DE,
+                 'AC_CODIGO_PRINCIPAL' => $AC_CODIGO_PRINCIPAL,
+                 'AC_SUBFAMILIA' => $AC_SUBFAMILIA,
+                 'AC_IDCUENTA_CONTABLE' => $AC_IDCUENTA_CONTABLE,
+                 'AC_TASA_DEPREC_CONTABLE' => $AC_TASA_DEPREC_CONTABLE,
+                 'AC_MONEDACOMPRA' => $AC_MONEDACOMPRA,
+                 'AC_NUM_VOUCHER' => $AC_NUM_VOUCHER,
+                 'AC_TC_VOUCHER' => $AC_TC_VOUCHER,
+                 'AC_DEPREC_EJERCICIO_CONTABLE' => $AC_DEPREC_EJERCICIO_CONTABLE,
+                 'AC_DEPREC_ACUMULADA_CONTABLE' => $AC_DEPREC_ACUMULADA_CONTABLE,
+                 'AC_VALOR_LIBRO_CONTABLE' => $AC_VALOR_LIBRO_CONTABLE,
+
+                 'AC_TIEMPO_VIDA' => $AC_TIEMPO_VIDA,
+                 'AC_DEPREC_INDIVIDUAL' => $AC_DEPREC_INDIVIDUAL,
+                 'AC_REFERENCIA_FINANCIERA' => $AC_REFERENCIA_FINANCIERA,
+                  'AC_DEPREC_EJERCICIO_FINANCIERA' => $AC_DEPREC_EJERCICIO_FINANCIERA,
+                  'AC_DEPREC_ACUMULADA_FINANCIERA' => $AC_DEPREC_ACUMULADA_FINANCIERA,
+
+                  'AC_ANIO_OTROS' => $AC_ANIO_OTROS,
+                  'AC_CHASIS' => $AC_CHASIS,
+                   'AC_NUMMOTOR' => $AC_NUMMOTOR,
+                   'AC_CODPROYECTO' => $AC_CODPROYECTO,
+                    'AC_FLAG_ESTADO_INVENTARIO' => $AC_FLAG_ESTADO_INVENTARIO,
+
+                    'AC_SUPERVISOR' => $AC_SUPERVISOR,
+                    'AC_USUARIO_UBICACION' => $AC_USUARIO_UBICACION,
+
+                        'AC_DIMENSION' => $AC_DIMENSION,
+
+                        'AC_OBSERVACIONES' => $AC_OBSERVACIONES,
+
+
+                        'AC_SERIE_GUIA_REMISION' => $AC_SERIE_GUIA_REMISION,
+
+                        'AC_NUM_DUA' => $AC_NUM_DUA,
+
+                        'AC_VH_SOLES' => $AC_VH_SOLES,
+
+                        'AC_VH_DOLARES' => $AC_VH_DOLARES,
+                        'AC_FOTO' => $foto,
+
+                                  'AC_TASA_DEPREC_INDIVIDUAL'  => $AC_TASA_DEPREC_INDIVIDUAL
 
                 );
-
         }
-                $this->BienModel->updateBien($_id,$data);
+        
+                $this->BienModel->updateBien($AC_IDACTIVO,$data);
+
+
+
                 $this->session->set_flashdata('msg','La bien '.$descripcion.' fue actualizada correctamente');
-                redirect('biens');
+                redirect('bienes');
       
     
     }
 
     public function store(){
+
+
        
 
         $config['upload_path'] = './images/';
@@ -205,25 +521,102 @@ class Bien extends CI_Controller {
 
  
  
-        $OF_IDSEDE   = $this->input->post('OF_IDSEDE');
-        $OF_IDLOCAL  = $this->input->post('OF_IDLOCAL');
-        $OF_IDAREA   = $this->input->post('OF_IDAREA');
-        $OF_DESCRIPCION  = $this->input->post('OF_DESCRIPCION');
-        $OF_ABREVI   = $this->input->post('OF_ABREVI');
+     $AC_IDACTIVO   = $this->input->post('AC_IDACTIVO');
+ 
+
+
+      // 2 $AC_CODIGO_ALT  = $this->input->post('AC_CODIGO_ALT');
+       // $AC_CODIGO_BARRA   = $this->input->post('AC_CODIGO_BARRA');
+        //$AC_COMPONENTE_DE  = $this->input->post('AC_COMPONENTE_DE');
+        $AC_ACTIVO_DES   = $this->input->post('AC_ACTIVO_DES');
       
         $OF_TERMINAL = gethostname();
- 
-       // $OF_IMAGEN   = $this->input->post('OF_DESCRIPCION');
-        $OF_RESPONSABLE = $this->input->post('OF_RESPONSABLE'); 
-        $OF_SUPERVISOR   = $this->input->post('OF_SUPERVISOR');
-        $OF_IDOFICINA   = $this->input->post('OF_IDOFICINA'); 
-        $OF_IDPISO   = $this->input->post('OF_IDPISO');
+                        
 
-        $estado = $this->input->post('OF_ESTADO');
-        $lastid  = $this->BienModel->getlastid();
-         
-        $format = "%Y-%m-%d %h:%i %a";
-        $fechaRegistro = @mdate($format);
+           $AC_CODIGO_ALT   = $this->input->post('AC_CODIGO_ALT');              
+//        AC_IDFAMILIA
+
+         $AC_IDFAMILIA = $this->input->post('AC_IDFAMILIA'); 
+       // $OF_IMAGEN   = $this->input->post('OF_DESCRIPCION');
+
+         $AC_FECHA_COMPRA = $this->input->post('AC_FECHA_COMPRA');
+        $AC_FECHA_INI_OPE = $this->input->post('AC_FECHA_INI_OPE'); 
+        $AC_IDMARCA   = $this->input->post('AC_IDMARCA');
+        $AC_MODELO   = $this->input->post('AC_MODELO'); 
+        $AC_NUMSERIE   = $this->input->post('AC_NUMSERIE');
+
+        $AC_NUMPLACA = $this->input->post('AC_NUMPLACA');
+        $AC_IDPROVE  = $this->input->post('AC_IDPROVE');
+        $AC_TDOC  = $this->input->post('AC_TDOC');
+         $AC_SDOC  = $this->input->post('AC_SDOC');
+     
+
+
+       $AC_NDOC  = $this->input->post('AC_NDOC');
+         $AC_IDESTADO_FISICO  = $this->input->post('AC_IDESTADO_FISICO');
+           $AC_CODIGO_BARRA  = $this->input->post('AC_CODIGO_BARRA');
+             $AC_IDCENCOS  = $this->input->post('AC_IDCENCOS');
+             $AC_IDAREA  = $this->input->post('AC_IDAREA');
+             $AC_NUM_CONTRATO  = $this->input->post('AC_NUM_CONTRATO');
+             $AC_VALOR_RESIDUAL  = $this->input->post('AC_VALOR_RESIDUAL');
+             $AC_IDORIGEN_REQ  = $this->input->post('AC_IDORIGEN_REQ');
+             $AC_IDRESPON_ACTI  = $this->input->post('AC_IDRESPON_ACTI');
+              $AC_IDCOLOR  = $this->input->post('AC_IDCOLOR');
+              $AC_IDSEDE  = $this->input->post('AC_IDSEDE');
+              $AC_IDLOCAL  = $this->input->post('AC_IDLOCAL');
+              $AC_IDOFICINA  = $this->input->post('AC_IDOFICINA');
+               $AC_IDCONDIBIEN  = $this->input->post('AC_IDCONDIBIEN');
+               $AC_IDPROCEDENCIA  = $this->input->post('AC_IDPROCEDENCIA');
+               $AC_TIPO_BIEN  = $this->input->post('AC_TIPO_BIEN');
+               $AC_COMPONENTE_DE  = $this->input->post('AC_COMPONENTE_DE');
+
+                $AC_CODIGO_PRINCIPAL  = $this->input->post('AC_CODIGO_PRINCIPAL');
+                 $AC_SUBFAMILIA  = $this->input->post('AC_SUBFAMILIA');
+                 $AC_IDCUENTA_CONTABLE  = $this->input->post('AC_IDCUENTA_CONTABLE');
+                 $AC_TASA_DEPREC_CONTABLE  = $this->input->post('AC_TASA_DEPREC_CONTABLE');
+                 $AC_MONEDACOMPRA  = $this->input->post('AC_MONEDACOMPRA');
+                 $AC_NUM_VOUCHER  = $this->input->post('AC_NUM_VOUCHER');
+                 $AC_TC_VOUCHER  = $this->input->post('AC_TC_VOUCHER');
+                 $AC_DEPREC_EJERCICIO_CONTABLE  = $this->input->post('AC_DEPREC_EJERCICIO_CONTABLE');
+                 $AC_DEPREC_ACUMULADA_CONTABLE  = $this->input->post('AC_DEPREC_ACUMULADA_CONTABLE');
+                 $AC_VALOR_LIBRO_CONTABLE  = $this->input->post('AC_VALOR_LIBRO_CONTABLE');
+
+                 $AC_TIEMPO_VIDA  = $this->input->post('AC_TIEMPO_VIDA');
+
+                  $AC_DEPREC_INDIVIDUAL  = $this->input->post('AC_DEPREC_INDIVIDUAL');
+                  $AC_REFERENCIA_FINANCIERA  = $this->input->post('AC_REFERENCIA_FINANCIERA');
+                  $AC_DEPREC_EJERCICIO_FINANCIERA  = $this->input->post('AC_DEPREC_EJERCICIO_FINANCIERA');
+                  $AC_DEPREC_ACUMULADA_FINANCIERA  = $this->input->post('AC_DEPREC_ACUMULADA_FINANCIERA');
+                  $AC_ANIO_OTROS  = $this->input->post('AC_ANIO_OTROS');
+                  $AC_CHASIS  = $this->input->post('AC_CHASIS');
+
+
+                  $AC_NUMMOTOR  = $this->input->post('AC_NUMMOTOR');
+
+                   $AC_CODPROYECTO  = $this->input->post('AC_CODPROYECTO');
+
+                   $AC_FLAG_ESTADO_INVENTARIO  = $this->input->post('AC_FLAG_ESTADO_INVENTARIO');
+                   $AC_SUPERVISOR  = $this->input->post('AC_SUPERVISOR');
+                   $AC_USUARIO_UBICACION  = $this->input->post('AC_USUARIO_UBICACION');
+
+                    $AC_DIMENSION = $this->input->post('AC_DIMENSION');
+
+                    $AC_OBSERVACIONES = $this->input->post('AC_OBSERVACIONES');
+
+                    $AC_SERIE_GUIA_REMISION = $this->input->post('AC_SERIE_GUIA_REMISION');
+
+
+                    
+                    $AC_NUM_DUA = $this->input->post('AC_NUM_DUA');
+
+
+                    $AC_VH_SOLES = $this->input->post('AC_VH_SOLES');
+                    $AC_VH_DOLARES = $this->input->post('AC_VH_DOLARES');
+
+
+                    $AC_TASA_DEPREC_INDIVIDUAL =  $this->input->post('AC_TASA_DEPREC_INDIVIDUAL');
+
+                //    $AC_FOTO = $this->input->post('AC_FOTO');
 
         $this->form_validation->set_rules(getCreateUserRules());
 
@@ -238,26 +631,86 @@ class Bien extends CI_Controller {
         //   $this->output->set_status_header(400);
         //}else {
             $bien = array(
-                'OF_ID' =>  $lastid,
+             //   'OF_ID' =>  $lastid,
                //  'OF_IMAGEN' => $orig_name, 
-                'OF_IMAGEN' => "0x".$hex_image ,
+               // 'OF_IMAGEN' => "0x".$hex_image ,
 
 
-                'OF_IDSEDE' => $OF_IDSEDE,
-                'OF_IDLOCAL' => $OF_IDLOCAL,
-                'OF_IDAREA' => $OF_IDAREA,
-                'OF_DESCRIPCION' => $OF_DESCRIPCION,
-                'OF_ABREVI' => $OF_ABREVI,
-                'OF_ESTADO' => 1,
-                'OF_USUARIO' => $usuariocrea,  
-                'OF_TERMINAL' => $OF_TERMINAL,
-                'OF_FECREG' => $fechaRegistro,
-                'OF_FECMOD' => $fechaRegistro,   
+                'AC_CODIGO' => $AC_IDACTIVO,
+              //2   'AC_CODIGO_ALT' => $AC_CODIGO_ALT   ,
+                'AC_ACTIVO_DES' => $AC_ACTIVO_DES,
+            //    'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                'AC_CODIGO_ALT' => $AC_CODIGO_ALT,
+               'AC_IDFAMILIA'  => $AC_IDFAMILIA,
+            'AC_FECHA_COMPRA'=> $AC_FECHA_COMPRA,
+                'AC_FECHA_INI_OPE' => $AC_FECHA_INI_OPE,
+                'AC_IDMARCA' => $AC_IDMARCA,
+                'AC_MODELO' => $AC_MODELO,  
+                'AC_NUMSERIE' => $AC_NUMSERIE,
+                'AC_NUMPLACA' => $AC_NUMPLACA,
+                'AC_IDPROVE' => $AC_IDPROVE,   
                 //'OF_IMAGEN' => $descripcion,   
-                'OF_RESPONSABLE' => $OF_RESPONSABLE,  
-                'OF_SUPERVISOR' => $OF_SUPERVISOR,  
-                'OF_IDOFICINA' => $OF_IDOFICINA,    
-                'OF_IDPISO' => $OF_IDPISO,   
+                'AC_TDOC' => $AC_TDOC,  
+                'AC_SDOC' => $AC_SDOC,  
+                'AC_NDOC' => $AC_NDOC,    
+                'AC_IDESTADO_FISICO' => $AC_IDESTADO_FISICO,   
+                'AC_CODIGO_BARRA' => $AC_CODIGO_BARRA,  
+                'AC_IDCENCOS' => $AC_IDCENCOS,  
+                'AC_IDAREA' => $AC_IDAREA,  
+                'AC_NUM_CONTRATO' => $AC_NUM_CONTRATO,  
+                'AC_VALOR_RESIDUAL' => $AC_VALOR_RESIDUAL,
+                'AC_IDORIGEN_REQ' => $AC_IDORIGEN_REQ,
+                'AC_IDRESPON_ACTI' => $AC_IDRESPON_ACTI,
+                'AC_IDCOLOR' => $AC_IDCOLOR,
+                'AC_IDSEDE' => $AC_IDSEDE,
+                'AC_IDLOCAL' => $AC_IDLOCAL,
+                'AC_IDOFICINA' => $AC_IDOFICINA,
+                'AC_IDCONDIBIEN' => $AC_IDCONDIBIEN,
+                 'AC_IDPROCEDENCIA' => $AC_IDPROCEDENCIA,
+                 'AC_TIPO_BIEN' => $AC_TIPO_BIEN,
+                 'AC_COMPONENTE_DE' => $AC_COMPONENTE_DE,
+                 'AC_CODIGO_PRINCIPAL' => $AC_CODIGO_PRINCIPAL,
+                 'AC_SUBFAMILIA' => $AC_SUBFAMILIA,
+                 'AC_IDCUENTA_CONTABLE' => $AC_IDCUENTA_CONTABLE,
+                 'AC_TASA_DEPREC_CONTABLE' => $AC_TASA_DEPREC_CONTABLE,
+                 'AC_MONEDACOMPRA' => $AC_MONEDACOMPRA,
+                 'AC_NUM_VOUCHER' => $AC_NUM_VOUCHER,
+                 'AC_TC_VOUCHER' => $AC_TC_VOUCHER,
+                 'AC_DEPREC_EJERCICIO_CONTABLE' => $AC_DEPREC_EJERCICIO_CONTABLE,
+                 'AC_DEPREC_ACUMULADA_CONTABLE' => $AC_DEPREC_ACUMULADA_CONTABLE,
+                 'AC_VALOR_LIBRO_CONTABLE' => $AC_VALOR_LIBRO_CONTABLE,
+
+                 'AC_TIEMPO_VIDA' => $AC_TIEMPO_VIDA,
+                 'AC_DEPREC_INDIVIDUAL' => $AC_DEPREC_INDIVIDUAL,
+                 'AC_REFERENCIA_FINANCIERA' => $AC_REFERENCIA_FINANCIERA,
+                  'AC_DEPREC_EJERCICIO_FINANCIERA' => $AC_DEPREC_EJERCICIO_FINANCIERA,
+                  'AC_DEPREC_ACUMULADA_FINANCIERA' => $AC_DEPREC_ACUMULADA_FINANCIERA,
+
+                  'AC_ANIO_OTROS' => $AC_ANIO_OTROS,
+                  'AC_CHASIS' => $AC_CHASIS,
+                   'AC_NUMMOTOR' => $AC_NUMMOTOR,
+                   'AC_CODPROYECTO' => $AC_CODPROYECTO,
+                    'AC_FLAG_ESTADO_INVENTARIO' => $AC_FLAG_ESTADO_INVENTARIO,
+
+                    'AC_SUPERVISOR' => $AC_SUPERVISOR,
+                    'AC_USUARIO_UBICACION' => $AC_USUARIO_UBICACION,
+
+                        'AC_DIMENSION' => $AC_DIMENSION,
+
+                        'AC_OBSERVACIONES' => $AC_OBSERVACIONES,
+
+
+                        'AC_SERIE_GUIA_REMISION' => $AC_SERIE_GUIA_REMISION,
+
+                        'AC_NUM_DUA' => $AC_NUM_DUA,
+
+                        'AC_VH_SOLES' => $AC_VH_SOLES,
+
+                        'AC_VH_DOLARES' => $AC_VH_DOLARES,
+                        'AC_FOTO' => "0x".$hex_image ,
+
+                                  'AC_TASA_DEPREC_INDIVIDUAL'  => $AC_TASA_DEPREC_INDIVIDUAL
+
                 
             );
     
@@ -268,7 +721,7 @@ class Bien extends CI_Controller {
             }else{
                  
                 $this->session->set_flashdata('msg','La bien a sido registrada'); 
-                redirect(base_url('biens'));
+                redirect(base_url('bienes'));
             }
 
 
@@ -290,19 +743,22 @@ class Bien extends CI_Controller {
         //$hexAsString = file_get_contents(  $bien[ "OF_IMAGEN" ] );
 
         // Just in case...
-        if (empty($bien[ "OF_IMAGEN" ])){
+        if (empty($bien[ "AC_FOTO" ])){
 
 
         }else{
-        assert( '0x' == substr( $bien[ "OF_IMAGEN" ], 0, 2 ));
+        assert( '0x' == substr( $bien[ "AC_FOTO" ], 0, 2 ));
 
         // Skip first two chars
-        $hexDigits = substr( $bien[ "OF_IMAGEN" ], 2, strlen( $bien[ "OF_IMAGEN" ] ) -2 );
+        $hexDigits = substr( $bien[ "AC_FOTO" ], 2, strlen( $bien[ "AC_FOTO" ] ) -2 );
 
-        $bien[ "OF_IMAGEN" ] = base64_encode(pack('H*', $hexDigits  ));
+        $bien[ "AC_FOTO" ] = base64_encode(pack('H*', $hexDigits  ));
         //$bien[ "OF_IMAGEN" ] =  base64_encode($bien['OF_IMAGEN']);
         //$bien[ "OF_IMAGEN" ] =  $im;
         }
+//var_dump($bien['PRO_DESCRIPCION']);
+//exit;
+
         $view = $this->load->view('edit_bien',array('bien' => $bien),true);
         $this->getTemplate($view);
     }
@@ -356,6 +812,105 @@ class Bien extends CI_Controller {
        
         $get_student = $this->BienModel->get_sede_data_model($id);
  
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_local_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_local_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_area_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_area_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_oficina_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_oficina_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_edificio_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_edificio_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_piso_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_piso_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_responsable_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_responsable_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+
+    public function get_supervisor_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_responsable_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_usuario_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_responsable_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_contrato_data($id = '')
+    {
+       
+        $get_student = $this->BienModel->get_contrato_data_model($id);
+ 
+        echo  json_encode($get_student); 
+
+        
+    }
+    public function get_tasa_depre_cuenta($id_cuenta){
+
+        $tasa = $this->BienModel->get_tasa_depre_cuenta($id_cuenta);   
+ 
+        echo  json_encode($tasa); 
+    }
+
+    public function get_bien_data($id = '')
+    {
+        $id = urldecode($id);
+
+        $get_student = $this->BienModel->get_bien_data_model($id);
+       
         echo  json_encode($get_student); 
 
         
