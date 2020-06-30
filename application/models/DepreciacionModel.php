@@ -93,8 +93,95 @@ foreach($data as $jugador){
  
     public function Verificar_Depre_Mes_Ant_Abierto($mes,$año,$tipo)
     {
-     return   $this->db->query('Verificar_Depre_Mes_Ant_Abierto '.$mes . ','.$año.','.$tipo)->result_array();
+     return   $this->db->query('AF_SP_VERIFICA_MES_DEPRECIADO_Y_ABIERTO '.$mes . ','.$año.','.$tipo)->result_array();
     } 
 
+    public function Verificar_Depreciacion_Cierre_Mensual_GPIX($mes,$año,$tipo)
+    {
+     return   $this->db->query('AF_SP_VERIFICA_DEPRECIACION_CON_CIERRE_MENSUAL '.$mes . ','.$año.','.$tipo)->result_array();
+    } 
+    
+    public function Verificar_Depreciacion_GPIX_Calculo_mensual($mes,$año,$tipo)
+    {
+     return   $this->db->query('AF_SP_VERIFICA_DEPRECIACION_CALCULO_MENSUAL '.$mes . ','.$año.','.$tipo)->result_array();
+    } 
+
+    public function Calcular_Depreciacion_GPIX($fechaproceso,$mes,$año)
+    {
+      //retornar calculo depreiacion
+      
+     $this->db->query("AF_SP_G_DEPRECIACION '".$fechaproceso ."',".$mes.",".$año);
+     $r= $this->db->query("select * from TAB_DEPRECIACION_MENSUAL ORDER BY [Cododigo.Interno] ")->result_array();
+     //foreach ($r->result() as $valor) {
+
+      
+
+    
+     //}
+     
+  
+    return $r;
+
+  
+
+    } 
+
+    public function Calcular_Depreciacion_GPIX1($messelect,$añoselect,$chk_tributario,$OF_TERMINAL, $usuariocrea)
+    {
+    
+     
+
+
+  
+   
+     $this->db->query('AF_SP_D_DEPRECIACION '.$añoselect . ','.$messelect.','.$chk_tributario)->result_array();
+   
+      
+    //return $b;
+
+  $abe =  $this->db->query("insert into AF_PR_DEPRECIACION (DM_IDACTIVO, DM_ANHO, DM_MES, DM_USUARIO, DM_TERMINAL, DM_VALOR_LIBRO,   
+    DM_F_ACTIVIDAD, DM_TASA  
+    , DM_FACTOR, DM_DEPREC_MES, DM_NUM_MESES, DM_DEPREC_EJERCICIO, DM_DEPREC_ACUMULADA, DM_VALOR_RESIDUAL, DM_CUENTA  
+    , DM_CENTRO_COSTO, DM_TIPO,DM_DEPREC_ACUMULADA_INICIAL,DM_TIPO_BIEN,DM_ESTADO_BAJA,  
+    DM_DEPREC_MES_DOS ) select  Codigo ,'".$añoselect ."','".$messelect."','".$usuariocrea."','".$OF_TERMINAL."',ValorLibro,[F.Actividad],[%],[Factor],[DeprecMensual],[Meses] ,[DeprecEjercicio]
+    ,[DeprecAcumulada]
+    ,[ValorResidual]
+    ,[CuentaContable]
+    ,[Centro.Costo],'".$chk_tributario."'
+    ,[DeprecAcumInicial],[Tipo]
+    ,[Baja],[Meses] from TAB_DEPRECIACION_MENSUAL where Grabar='SI' ORDER BY [Cododigo.Interno] ");
+    
+    return $abe;
+
+
+    } 
+
+
+    public function Calcular_Depreciacion_Financiera_Cta_Contable_GPIX($fechaproceso,$mes,$año)
+    {
+  
+     $comilla="'";
+     return   $this->db->query('AF_SP_G_DEPRECIACION_FINANCIERA_CUENTA_CONTABLE '.$comilla.$fechaproceso .$comilla. ','.$mes.','.$año)->result_array();
+
+
+    } 
+    public function Calcular_Depreciacion_Financiera_Sub_Familia_GPIX($fechaproceso,$mes,$año)
+    {
+      $comilla="'";
+    
+     return   $this->db->query('AF_SP_G_DEPRECIACION_FINANCIERA_SUB_FAMILIA '.$comilla.$fechaproceso .$comilla. ','.$mes.','.$año)->result_array();
+
+    } 
+    public function rpt_AF_Lista_general($ordenarpor,$tipo_depreciacion,$todos,$txtclienteinicial, $txtclientefinal)
+    {
+     
+    
+     return   $this->db->query("AF_RPT_A_ACTIVOS_FIJOS ".$ordenarpor.",".$tipo_depreciacion .",'".$todos."','".$txtclienteinicial."','". $txtclientefinal."','2019'" )->result_array();
+
+    } 
+
+   
+
+   
 
 }

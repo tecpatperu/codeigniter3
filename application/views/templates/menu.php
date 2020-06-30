@@ -17,7 +17,34 @@
       </div>
 
       <!-- Nav Item - Catalogo -->
-      <li class="nav-item <?= $this->uri->segment(1) == 'sedes' ? 'active' : ''; ?>">
+      <li class="nav-item <?= $this->uri->segment(1) == 'sedes' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'usuarios' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'locales' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'areas' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'oficinas' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'proveedores' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'tiposdocumento' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'cuentascontable' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'estadosbien' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'condicionesbien' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'origenesbien' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'procedenciasbien' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'motivosbaja' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'familias' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'subfamilias' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'motivostraslado' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'centroscosto' ? 'active' : ''; ?>
+      
+      <?= $this->uri->segment(1) == 'colores' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'contratos' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'bancos' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'proyectos' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'edificios' ? 'active' : ''; ?>
+      <?= $this->uri->segment(1) == 'pisos' ? 'active' : ''; ?>
+
+      ">
+     
+      
         <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-book-open"></i>
           <span>Catálogo</span>
@@ -94,10 +121,10 @@
                      <div  class="bg-white py-2 collapse-inner2 rounded">
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'bienes' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Incorporacion</a>
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'consultas' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Consultas</a>
-                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'mejoras' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Mejoras</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'mejoras' ? 'active' : ''; ?>"  href="<?php echo base_url('mejoras')?>" style="font-size:  10px;" >Mejoras</a>
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'traslados' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Traslados</a>
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'bajas' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Bajas</a>
-                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'ajustes' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Ajustes</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'ajustes' ? 'active' : ''; ?>"  href="<?php echo base_url('ajuste')?>" style="font-size:  10px;" >Ajustes</a>
                         <a class="collapse-subitem <?= $this->uri->segment(1) == 'impresion' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Impresion</a>
                          <a class="collapse-subitem <?= $this->uri->segment(1) == 'reclasificacion' ? 'active' : ''; ?>"  href="<?php echo base_url('bienes')?>" style="font-size:  10px;" >Reclasificacion</a>
                      </div>
@@ -144,18 +171,38 @@
 
 
       <!--Nav Item Reportes-->
-      <li class="nav-item">
+      <li class="nav-item <?= $this->uri->segment(1) == 'reporte' ? 'active' : ''; ?>" >
         <a class="nav-link collapsed" href="<?php echo base_url()."assets/"; ?>#" data-toggle="collapse" data-target="#collapseReportes" aria-expanded="true" aria-controls="collapseReportes">
           <i class="far fa-registered"></i>
           <span>Reportes</span>
         </a>
-        <div id="collapseReportes" class="collapse" aria-labelledby="headingReportes" data-parent="#accordionSidebar">
+        <div id="collapseReportes"   class="collapse  <?= $this->uri->segment(1) == 'reporte' ? 'show' : ''; ?>" aria-labelledby="headingReportes" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-color.html" style="font-size:  10px;">Administrativos</a>
-            <a class="collapse-item" href="<?php echo base_url()."assets/"; ?>utilities-border.html" style="font-size:  10px;">Sunat</a>
-                         
-          </div>
+      
+
+            <a id="accordionadministrativo" class="collapse-item"   href="#" data-toggle="collapse" data-target="#collapseadministrativo" aria-expanded="true" aria-controls="collapseadministrativo" style="font-size:  10px;"> <span>Administrativos</span></a>
+
+
+
+            <!-- aca es-->
+
+
+               <div id="collapseadministrativo" class="collapse <?= $this->uri->segment(1) == 'reporte' && $this->uri->segment(2) != 'sunat' ? 'show' : ''; ?>"  aria-labelledby="headingbien" data-parent="#accordionadministrativo">
+                    <div  class="bg-white py-2 collapse-inner2 rounded">
+                    <a class="collapse-subitem <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'administrativo_activofijogeneral' ? 'active' : ''; ?>" href="<?php echo base_url('reporte/administrativo_activofijogeneral'); ?>" style="font-size:  10px;">Activos Fijos General</a>
+                        <a class="collapse-subitem  <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'administrativo_activofijoctacontable' ? 'active' : ''; ?>"  href="<?php echo base_url('reporte/administrativo_activofijoctacontable')?>" style="font-size:  10px;" >Activos Fijos por Cta.Contable</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'administrativo_activofijomejora' ? 'active' : ''; ?>"  href="<?php echo base_url('reporte/administrativo_activofijomejora')?>" style="font-size:  10px;" >Activos Fijos con Mejoras</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'administrativo_activofijobaja' ? 'active'  : ''; ?>"  href="<?php echo base_url('reporte/administrativo_activofijobaja')?>" style="font-size:  10px;" >Activos Fijos de Baja</a>
+                        <a class="collapse-subitem <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'administrativo_rptgeneralmovimiento' ? 'active' : ''; ?>"  href="<?php echo base_url('reporte/administrativo_rptgeneralmovimiento')?>" style="font-size:  10px;" >Rep. General de Movimientos</a>
+              
+                    </div>
+
+
+               </div>
+            <a class="collapse-item <?= $this->uri->segment(1) == 'reporte'  && $this->uri->segment(2) == 'sunat' ? 'active' : ''; ?>" href="<?php echo base_url('reporte/sunat');?>" style="font-size:  10px;">Sunat</a>
+
         </div>
+      </div>
       </li>
 
 

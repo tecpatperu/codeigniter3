@@ -480,17 +480,17 @@ legend {
             </div>
             <div class="form-row">
                 <label class="col-2" for="">Moneda de compra </label>
-            <?=form_dropdown('AC_MONEDACOMPRA',get_combo('CO_TB_MONEDA','MO_ABRE','MO_DESCRIPCION',array("Seleccione")),'0',array('class'=>"form-control",'class'=>"selectpicker",'id'=>"monedacompracreate"))?>
+            <?=form_dropdown('AC_MONEDACOMPRA',get_combo('CO_TB_MONEDA','MO_ABRE','MO_DESCRIPCION',array("Seleccione")),'0',array('class'=>"form-control",'class'=>"selectpicker",'id'=>"monedacompra"))?>
                 <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
             <div class="form-row">
               <label class="col-2" for="">Número de Voucher.</label>
-              <input class="col-3" type="text" name="AC_NUM_VOUCHER"  class="form-control" placeholder="Numero voucher" value="<?= set_value('user') ?>">
+              <input class="col-3" type="text" name="AC_NUM_VOUCHER"  class="form-control" placeholder="Numero voucher" value="<?= set_value('user') ?> " readonly >
               <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
             <div class="form-row">
               <label class="col-2" for="">T.C de Voucher.</label>
-              <input class="col-3" type="text" name="AC_TC_VOUCHER"  class="form-control" placeholder="0.000" value="<?= set_value('user') ?>" >
+              <input class="col-3" type="text" name="AC_TC_VOUCHER"  class="form-control" placeholder="0.000" value="<?= set_value('user') ?>" readonly >
               <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
             <div class="form-row">
@@ -500,13 +500,13 @@ legend {
             </div>
             <div class="form-row">
               <label class="col-2" for="">Valor Historico $</label>
-              <input class="col-3" type="text" name="AC_VH_DOLARES"  class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" disabled>
+              <input class="col-3" type="text" name="AC_VH_DOLARES"  class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" >
               <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
             <div class="form-row">
               <label class="col-2" for="">Precio Compra S/.</label>
               <input class="col-1" type="text" name="pc_soles_contable"  class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" readonly>
-              <input class="col-1" type="text" name="igv_general_contable"  class="form-control" placeholder="0.00" value="18" disabled>
+              <input class="col-1" type="text" name="igv_general_contable"  class="form-control" placeholder="0.00" value="18" readonly>
              
               <input class="col-1" type="text" name="total_cuenta_contable"  class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" readonly>
 
@@ -943,7 +943,7 @@ legend {
        </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

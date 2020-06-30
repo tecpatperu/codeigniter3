@@ -1,5 +1,40 @@
 (function(){
-    
+  
+ 
+$('#idmes').on('change', function () {
+  var año = document.getElementById("idaño").value;
+  var mes = document.getElementById("idmes").value;
+  var date = año+mes;
+  var year = parseInt(date.substring(0, 4));
+  var month= date.substring(4, 6).padStart(2,"0");
+  var lastDay = (new Date(year, month, 0)).getUTCDate();
+  var newFullGivenDate = lastDay +"/" +month +"/"+ year ;
+
+    $('input[name="fecha_proceso"]').val(newFullGivenDate);
+  
+ 
+ }); 
+
+
+ 
+
+ 
+ $('#idaño').on('change', function () {
+  var año = document.getElementById("idaño").value;
+  var mes = document.getElementById("idmes").value;
+  var date = año+mes;
+  var year = parseInt(date.substring(0, 4));
+  var month= date.substring(4, 6).padStart(2,"0");
+  var lastDay = (new Date(year, month, 0)).getUTCDate();
+  var newFullGivenDate = lastDay +"/" +month +"/"+ year ;
+
+    $('input[name="fecha_proceso"]').val(newFullGivenDate);
+  
+ 
+ }); 
+
+
+
 $('#estado').on('click', function () {
     $(this).val(this.checked ? 1 : 0);
      
@@ -447,3 +482,184 @@ $('.view_detailpisos').click(function(){
         })
     })
 })();
+
+
+
+
+
+
+
+
+function calcular_depreciacion(){
+          
+          
+         var formData = $('#depreciacion').serialize();
+          
+          $.ajax({
+            type: 'ajax',
+
+              url : '/codeigniter3/depreciacion/calcular_depreciacion',
+           
+            dataType : 'json' ,
+            method : 'POST',
+              data:  $('#depreciacion').serialize(),
+              success:function(data) {
+
+            
+               if(typeof data == 'object'){
+
+                var html = '';
+                var i;
+                for(i=0; i<data.length; i++){
+
+                  html +=  
+                      '<tr><td>'+data[i].Codigo + '</td>'+
+                      '<td>'+data[i].Descripción + '</td>'+
+                      '<td>'+data[i].ValorLibro+'</td>'+
+                      '<td>'+data[i].DeprecAcumInicial+'</td>'+
+                      '<td>'+data[i]['F.Actividad']+'</td>'+
+                      '<td>'+data[i]['%']+'</td>'+
+                      '<td>'+data[i].Factor+'</td>'+
+                      '<td>'+data[i].DeprecMensual+'</td>'+
+                      '<td>'+data[i].Meses+'</td>'+
+                      '<td>'+data[i].DeprecEjercicio+'</td>'+
+                      '<td>'+data[i].DeprecAcumulada+'</td>'+
+                      '<td>'+data[i].ValorResidual+'</td>'+
+                      '<td>'+data[i].CuentaContable+'</td>'+
+                      '<td>'+data[i]['Centro.Costo']+'</td>'+
+                      '<td>'+data[i].Tipo+'</td>'+
+                      '<td>'+data[i].Baja+'</td>'+
+                      '<td>'+data[i].Grabar+'</td>'+
+                      '<td>'+data[i].SUMA+'</td>'+
+
+                      '</tr> ';
+                }
+
+            
+                $('input[name="total_items"]').val(data.length-1);
+                $('input[name="total_dep_inicial"]').val(data[data.length-1].DeprecAcumInicial);
+                $('input[name="total_dep_ejercicio"]').val(data[data.length-1].DeprecEjercicio);
+                $('input[name="total_dep_acumulada"]').val(data[data.length-1].DeprecAcumulada);
+                $('input[name="total_valor_libros"]').val(data[data.length-1].ValorLibro);
+                $('input[name="total_dep_mensual"]').val(data[data.length-1].DeprecMensual);
+                
+                
+                
+
+                
+               }else{
+
+                console.log("Información vacía");
+               }
+         
+
+                 document.getElementById("t01").innerHTML = html;
+     
+              },
+              error: function (jqXHR, textStatus, errorThrown)
+              {
+                alert(errorThrown +'Error get data from ajax');
+              }
+          });
+
+
+          
+
+         
+
+}
+
+var $mesT=0;
+var $añoT=0;
+var $mesCadena="";
+
+
+
+
+function grabar_depreciacion(){
+$mesT=document.getElementById("idmes").value;
+$añoT= document.getElementById("idaño").value;
+
+if($mesT == 1){
+  $mesCadena="Enero";
+}else if($mesT == 2) {
+  $mesCadena="Febrero";
+}else if($mesT == 3) {
+  $mesCadena="Marzo";
+}else if($mesT == 4) {
+  $mesCadena="Abril";
+}else if($mesT == 5) {
+  $mesCadena="Mayo";
+}else if($mesT == 6) {
+  $mesCadena="Junio";
+}else if($mesT == 7) {
+  $mesCadena="Julio";
+}else if($mesT == 8) {
+  $mesCadena="Agosto";
+}else if($mesT == 9) {
+  $mesCadena="Setiembre";
+}else if($mesT == 10) {
+  $mesCadena="Octubre";
+}else if($mesT == 11) {
+  $mesCadena="Noviembre";
+}else if($mesT == 12) {
+  $mesCadena="Diciembre";
+}
+
+if (confirm("Esta seguro de guardar la depreciación al mes de "+$mesCadena+" del "+$añoT+" ?")) {
+
+        var formData = $('#depreciacion').serialize();
+        $.ajax({
+          type: 'ajax',
+
+            url : '/codeigniter3/depreciacion/grabar_depreciacion',
+        
+          dataType : 'json' ,
+          method : 'POST',
+            data:  $('#depreciacion').serialize(),
+            success:function(data) {
+
+                    
+                      
+                      
+              alert("Registro de Depreciación Mensual correcto.");
+
+      //reseteando los valores
+
+      
+      $('input[name="total_items"]').val("0.00");
+      $('input[name="total_dep_inicial"]').val("0.00");
+      $('input[name="total_dep_ejercicio"]').val("0.00");
+      $('input[name="total_dep_acumulada"]').val("0.00");
+      $('input[name="total_valor_libros"]').val("0.00");
+      $('input[name="total_dep_mensual"]').val("0.00");
+                        
+
+                    
+
+              
+
+            },
+
+          
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+              alert(errorThrown +'Error get data from ajax');
+            }
+
+        
+
+          });
+
+  }   
+              
+
+else{
+
+  alert("Se ha cancelado la operación .");
+  return ;
+
+}
+
+
+}

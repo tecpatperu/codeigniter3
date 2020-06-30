@@ -288,3 +288,26 @@ $route['bienes/editar/(:num)'] = 'bien/edit/$1';
 $route['bienes/actualizar']['POST'] = 'bien/update';
 $route['bienes/index/(:any)'] = 'bien/index/$1';
 $route['bienes/index'] = 'bien/index';
+
+//sunat
+$route['sunat'] = 'sunat';
+$route['sunat/index'] = 'sunat/index';
+
+
+//mejoras
+
+$route['mejoras'] = 'mejoras';
+$route['mejoras/nuevo'] = 'mejoras/create';
+$route['mejoras/editar/(:num)'] = 'mejoras/edit/$1';
+$route['mejoras/actualizar']['POST'] = 'mejoras/update';
+$route['mejoras/index/(:any)'] = 'mejoras/index/$1';
+$route['mejoras/index'] = 'mejoras/index';
+
+
+
+$route['ajuste'] = 'ajuste';
+$route['ajuste/nuevo'] = 'ajuste/create';
+$route['ajuste/editar/(:num)'] = 'ajuste/edit/$1';
+$route['ajuste/actualizar']['POST'] = 'ajuste/update';
+$route['ajuste/index/(:any)'] = 'ajuste/index/$1';
+$route['ajuste/index'] = 'ajuste/index';

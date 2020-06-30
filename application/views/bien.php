@@ -34,11 +34,11 @@
             <th scope="col" style="padding-right: 100px;">Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id ="listbienesbusqueda">
           <?php 
 
           foreach($data as $item): ?>
-          <tr><td style="display:none;"><?= $item->Id ?></td>
+          <tr><td  style="display:none;"><?= $item->Id ?></td>
             <td scope="row"><?= $item->Codigo ?></td>
             <td scope="row"><?= $item->Ficha ?></td>
             <td scope="row"><?= $item->Codigo_Barra ?></td>

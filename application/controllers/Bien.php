@@ -44,6 +44,14 @@ class Bien extends CI_Controller {
         $this->getTemplate($this->load->view('bien',array('data' => $page),true));
         
     }
+    public function temporal($buscar){
+        $buscar = urldecode($buscar);
+        $page = $this->BienModel->getBienTemporal($buscar);
+               
+       echo json_encode($page);
+        
+    }
+
     public function delete(){
         $_id = $this->input->post('id',true);
 
@@ -915,7 +923,25 @@ class Bien extends CI_Controller {
 
         
     }
+    public function get_mejoras_data($id = '')
+    {
+        $id = urldecode($id);
 
+        $get_mejora = $this->BienModel->get_mejoras_model($id);
+       
+        echo  json_encode($get_mejora); 
 
+        
+    }
+    public function get_ajustes_data($id = '')
+    {
+        $id = urldecode($id);
+
+        $get_ajuste = $this->BienModel->get_ajustes_model($id);
+       
+        echo  json_encode($get_ajuste); 
+
+        
+    }
 
 }

@@ -306,7 +306,7 @@ legend {
 
 
 
-
+   
 
 
    <ul class="nav nav-tabs" >
@@ -314,8 +314,8 @@ legend {
     <li class='nav-item'><a     class="nav-link"  data-toggle="tab" href="#Adquisicion">Adquisición<br/>.<br></a></li>
     <li class='nav-item'><a class="nav-link" data-toggle="tab" href="#Tributario">Tributario<br/>.<br></a></li>
     <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Financiera">Financiera<br/>.<br></a></li>
-    <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Ajustes">Lista de <br>Ajustes</a></li>
-    <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Mejoras">Lista de <br>Mejoras</a></li>
+    <li class='nav-item'><a onClick="cargarajustes();" class="nav-link" data-toggle="tab" href="#Ajustes">Lista de <br>Ajustes</a></li>
+    <li class='nav-item'><a onClick="cargarmejoras();"  class="nav-link" data-toggle="tab" href="#Mejoras">Lista de <br>Mejoras</a></li>
     <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Traslado">Lista de <br>Traslado</a></li>
     <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Reclasificacion">Lista de <br>Reclasificación</a></li>
     <li class='nav-item'><a  class="nav-link" data-toggle="tab" href="#Revaluacion">Lista de<br>Revaluación</a></li>
@@ -580,7 +580,7 @@ legend {
 
             <div class="form-row">
               <label class="col-2" for="">Número de Voucher.</label>
-              <input class="col-3" type="text" name="AC_NUM_VOUCHER"  class="form-control" placeholder="Numero voucher" value="<?=set_value('AC_NUM_VOUCHER',isset($bien['AC_NUM_VOUCHER']) ? $bien['AC_NUM_VOUCHER']  : '')?>"  >
+              <input class="col-3" type="text" name="AC_NUM_VOUCHER"  class="form-control" readonly placeholder="Numero voucher" value="<?=set_value('AC_NUM_VOUCHER',isset($bien['AC_NUM_VOUCHER']) ? $bien['AC_NUM_VOUCHER']  : '')?>"  >
 
 
       
@@ -590,7 +590,7 @@ legend {
 
             <div class="form-row">
               <label class="col-2" for="">T.C de Voucher.</label>
-              <input class="col-3" type="text" name="AC_TC_VOUCHER" id="AC_TC_VOUCHERp"  class="form-control" placeholder="0.00" value="<?=set_value('AC_TC_VOUCHER',isset($bien['AC_TC_VOUCHER']) ? $bien['AC_TC_VOUCHER']  : '')?>" readonly >  
+              <input class="col-3" type="text" name="AC_TC_VOUCHER"   class="form-control" placeholder="0.00" value="<?=set_value('AC_TC_VOUCHER',isset($bien['AC_TC_VOUCHER']) ? $bien['AC_TC_VOUCHER']  : '')?>" readonly >  
 
 
             </div>
@@ -598,7 +598,7 @@ legend {
 
             <div class="form-row">
               <label class="col-2" for="">Valor Historico S/.</label>
-              <input class="col-3" type="text" name="AC_VH_SOLES"  id="AC_VH_SOLESp"   class="form-control" placeholder="0.00" value="<?=set_value('AC_VH_SOLES',isset($bien['AC_VH_SOLES']) ? $bien['AC_VH_SOLES']  : '')?>"  >
+              <input class="col-3" type="text" name="AC_VH_SOLES"    class="form-control" placeholder="0.00" value="<?=set_value('AC_VH_SOLES',isset($bien['AC_VH_SOLES']) ? $bien['AC_VH_SOLES']  : '')?>"  >
 
 
 
@@ -613,7 +613,7 @@ legend {
 
             <div class="form-row">
               <label class="col-2" for="">Valor Historico $</label>
-              <input class="col-3" type="text" name="AC_VH_DOLARES" id="AC_VH_DOLARESp" class="form-control" placeholder="0.00" value="<?=set_value('AC_VH_DOLARES',isset($bien['AC_VH_DOLARES']) ? $bien['AC_VH_DOLARES']  : '')?>" readonly >
+              <input class="col-3" type="text" name="AC_VH_DOLARES" class="form-control" placeholder="0.00" value="<?=set_value('AC_VH_DOLARES',isset($bien['AC_VH_DOLARES']) ? $bien['AC_VH_DOLARES']  : '')?>" readonly >
               <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
 
@@ -637,8 +637,9 @@ legend {
 
 
             <div class="form-row">
-              <label class="col-2" for="">Valor Libro $</label>
-              <input class="col-1" type="text" name="AC_VALOR_LIBRO_CONTABLE" id="acvalorlibro" class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" readonly>
+              <label class="col-2" for="">Valor Libro </label>
+              
+              <input class="col-2" type="text" name="AC_VALOR_LIBRO_CONTABLE" id="acvalorlibro" class="form-control" placeholder="0.00" value="<?=set_value('AC_VALOR_LIBRO_CONTABLE',isset($bien['AC_VALOR_LIBRO_CONTABLE']) ? $bien['AC_VALOR_LIBRO_CONTABLE']  : '')?>" readonly>
               <input   type="checkbox" name="prec_compra_sin_igv"  value="0" >
               <label   for="">Precio Compra sin IGV</label>
               <div class="text-danger"><?= form_error('name') ?></div>   
@@ -654,7 +655,7 @@ legend {
 
             <div class="form-row">
               <label class="col-2" for="">Deprec. Acumulada</label>
-              <input class="col-1" type="text" name="AC_DEPREC_ACUMULADA_CONTABLE"  class="form-control" placeholder="0.00" value="<?= set_value('user') ?>" disabled>
+              <input class="col-1" type="text" name="AC_DEPREC_ACUMULADA_CONTABLE"  class="form-control" placeholder="0.00" value="<?=set_value('AC_DEPREC_ACUMULADA_CONTABLE',isset($bien['AC_DEPREC_ACUMULADA_CONTABLE']) ? $bien['AC_DEPREC_ACUMULADA_CONTABLE']  : '')?>" readonly>
               <div class="text-danger"><?= form_error('name') ?></div>   
             </div>
 
@@ -728,11 +729,48 @@ legend {
             </div>
     </div>
     <div id="Ajustes" class="tab-pane   fade">
-      
+    <table class="table w-auto small" border = 1>
+       <thead>
+       <tr style="  background-color: black;  color: white;">
+             <th scope="col">Item</th>
+              <th scope="col">Codigo</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Valor Libro</th>
+              <th scope="col">Ajuste</th>
+              <th scope="col">Libro</th>
+              <th scope="col">Ajuste</th>
+              <th scope="col">Tributario</th>
+              <th scope="col">Ajuste</th> 
+              <th scope="col">Financiero</th> 
+            
+              <th scope="col">Cta. Contable</th>
+          </tr>
+       </thead>
+       <tbody id="listajustes">
+       
+       </tbody>
+       </table>
       <p> </p>
     </div>
     <div id="Mejoras" class="tab-pane   fade">
+       <table class="table w-auto small" border = 1>
+       <thead>
+       <tr style="  background-color: black;  color: white;">
+              <th scope="col">Tipo.Documento</th>
+              <th scope="col">Serie.Doc.</th>
+              <th scope="col">Numero.Documento</th>
+              <th scope="col">Fecha.Mejora</th>
+              <th scope="col">Moneda.Mejora</th>
+              <th scope="col">Monto.Mejora</th>
+              <th scope="col">T.Cambio.Mejora</th>
+              <th scope="col">Observaciones</th> 
+           
+          </tr>
+       </thead>
+       <tbody id="listmejoras">
        
+       </tbody>
+       </table>
       <p> </p>
     </div>
     <div id="Traslado" class="tab-pane   fade">

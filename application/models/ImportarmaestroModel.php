@@ -91,7 +91,7 @@ foreach($data as $jugador){
    }
  
     $this->db->query('AF_SP_U_ACTIVO_TASA_DEPREC_TRIBUTARIA');
-    $array = $this->db->query("AF_SP_S_ACTIVO04 '".date("Y-m-d",strtotime($actualiza['fecha_inicio_oper']))."'");
+    $array = $this->db->query("AF_SP_S_ACTIVO04 '".date("d/m/Y",strtotime($actualiza['fecha_inicio_oper']))."'");
 
   
     foreach ($array->result() as $valor) {
